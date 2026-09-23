@@ -14,7 +14,32 @@ const MARQUEE_ITEMS = [
   'NestJS', 'TypeScript', 'Leaflet', 'Open-Meteo', 'FinBERT',
 ]
 
-const SMARTTEA_TAGS = ['Python', 'LSTM', 'XGBoost', 'SHAP', 'NestJS', 'FinBERT']
+const PROJECTS = [
+  {
+    name: 'SmartTeaAI',
+    tagline: 'Dissertation · Tea auction price forecasting',
+    img: '/projects/smarttea.png',
+    desc: 'A forecasting system for Sri Lanka’s tea auction prices at national and elevation level. It runs ARIMA, SARIMAX, Random Forest, XGBoost and LSTM, explains predictions with SHAP, and reads market sentiment through a FinBERT pipeline — served via a NestJS API with role-based access.',
+    tags: ['Python', 'LSTM', 'XGBoost', 'SHAP', 'NestJS', 'FinBERT'],
+    href: 'https://github.com/MalmEEE/SmartTeaAI-',
+  },
+  {
+    name: 'Cafe Finder',
+    tagline: 'React · Node / Express',
+    img: '/projects/cafe.png',
+    desc: 'Find nearby cafes on a map — live opening hours, filters and sorting, and favourites saved locally. Built on OpenStreetMap and Leaflet.',
+    tags: ['React', 'Node/Express', 'Leaflet', 'OSM'],
+    href: null,
+  },
+  {
+    name: 'Weather Planner',
+    tagline: 'React · Node / Express',
+    img: '/projects/weather.png',
+    desc: 'A “what to wear, what to do” planner that turns live weather and air-quality data into one clear suggestion, using geolocation or manual search.',
+    tags: ['React', 'Node/Express', 'Open-Meteo'],
+    href: null,
+  },
+]
 
 const DEVICON = (slug) => `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${slug}/${slug}-original.svg`
 
@@ -102,6 +127,30 @@ function TechTile({ t }) {
       </span>
       <span className="mono tech-name">{t.name}</span>
     </div>
+  )
+}
+
+function ProjectCard({ p, featured }) {
+  return (
+    <article className={`project-card${featured ? ' featured' : ''}`}>
+      <div className="project-media">
+        <span className="project-fallback" aria-hidden="true">{p.name}</span>
+        <img src={p.img} alt={`${p.name} preview`} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+      </div>
+      <div className="project-body">
+        <div className="project-head">
+          <h3 className="display project-name">{p.name}</h3>
+          <span className="mono project-tagline">{p.tagline}</span>
+        </div>
+        <p className="project-desc">{p.desc}</p>
+        <div className="pill-row">
+          {p.tags.map((tag) => <span className="pill" key={tag}>{tag}</span>)}
+        </div>
+        {p.href && (
+          <a className="mono code-link" href={p.href} target="_blank" rel="noopener noreferrer">View the code</a>
+        )}
+      </div>
+    </article>
   )
 }
 
@@ -264,72 +313,12 @@ export default function App() {
         <section id="work" className="section">
           <div className="wrap">
             <h2 className="display">What I've been building</h2>
-            <p className="hint">Tap a card to open it up.</p>
-
-            <div className="card-border">
-              <div className="card-inner">
-                <button className="card-btn" onClick={() => toggle('smarttea')} aria-expanded={open.smarttea}>
-                  <span className="card-title-group">
-                    <span className="display card-title">SmartTeaAI</span>
-                    <span className="mono card-sub">Dissertation · Tea auction price forecasting</span>
-                  </span>
-                  <Chevron open={open.smarttea} />
-                </button>
-                {open.smarttea && (
-                  <div className="card-panel open">
-                    <p>
-                      A forecasting system for Sri Lanka's tea auction prices, at both the national and
-                      elevation level. It runs ARIMA, SARIMAX, Random Forest, XGBoost and LSTM against the
-                      same data, explains its predictions with SHAP, and reads market sentiment from news
-                      coverage through a FinBERT pipeline — all served through a NestJS API with role-based
-                      access for farmers, brokers and analysts.
-                    </p>
-                    <p className="meta">
-                      LSTM · MAPE 3.22% nationally · 135 rows · 65 features · April 2015 – June 2026,
-                      sourced from the Sri Lanka Tea Board, Open-Meteo, the Central Bank of Sri Lanka and
-                      the World Bank
-                    </p>
-                    <div className="pill-row">
-                      {SMARTTEA_TAGS.map((tag) => <span className="pill" key={tag}>{tag}</span>)}
-                    </div>
-                    <a href="https://github.com/MalmEEE/SmartTeaAI-" className="mono code-link" target="_blank" rel="noopener noreferrer">View the code</a>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="grid-2 work-secondary">
-              <div className="card-border">
-                <div className="card-inner">
-                  <button className="card-btn" onClick={() => toggle('cafe')} aria-expanded={open.cafe}>
-                    <span className="display card-title small">Cafe Finder</span>
-                    <Chevron open={open.cafe} />
-                  </button>
-                  {open.cafe && (
-                    <div className="card-panel open">
-                      <p>
-                        A React and Node/Express app for finding nearby cafes on a map — live hours,
-                        filters and sorting, favourites saved locally. Built on OpenStreetMap and Leaflet.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="card-border">
-                <div className="card-inner">
-                  <button className="card-btn" onClick={() => toggle('weather')} aria-expanded={open.weather}>
-                    <span className="display card-title small">Weather Planner</span>
-                    <Chevron open={open.weather} />
-                  </button>
-                  {open.weather && (
-                    <div className="card-panel open">
-                      <p>
-                        A "what to wear, what to do" app that turns live weather and air-quality data into
-                        one clear suggestion, using browser location or manual search.
-                      </p>
-                    </div>
-                  )}
-                </div>
+            <p className="hint">A few projects I've built recently.</p>
+            <div className="projects">
+              <ProjectCard p={PROJECTS[0]} featured />
+              <div className="projects-grid">
+                <ProjectCard p={PROJECTS[1]} />
+                <ProjectCard p={PROJECTS[2]} />
               </div>
             </div>
           </div>
