@@ -106,6 +106,8 @@ const NAV = [
 
 const ROLES = ['Full-Stack Developer', 'Data Science Student', 'React & Python Dev', 'Problem Solver']
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdeanqzz'
+
 function RotatingRole() {
   const [i, setI] = useState(0)
   const [text, setText] = useState('')
@@ -189,6 +191,23 @@ export default function App() {
   const markerX = CHART_X_MIN + (CHART_X_MAX - CHART_X_MIN) * (scrub / 100)
 
   const toggle = (key) => setOpen((o) => ({ ...o, [key]: !o[key] }))
+
+  const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    setStatus('sending')
+    const form = e.target
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      })
+      if (res.ok) { setStatus('sent'); form.reset() } else { setStatus('error') }
+    } catch {
+      setStatus('error')
+    }
+  }
 
   const [active, setActive] = useState('')
   useEffect(() => {
@@ -373,13 +392,40 @@ export default function App() {
         </section>
 
         <section id="talk" className="section talk">
-          <div className="wrap talk-inner">
+          <div className="wrap">
             <h2 className="display">Let's talk</h2>
-            <p>Happy to talk about full-stack engineering, data science, or anything in between.</p>
-            <a href="mailto:m.wimalaweera01@gmail.com" className="glow-btn">m.wimalaweera01@gmail.com</a>
-            <div className="talk-links">
-              <a href="https://github.com/MalmEEE" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="https://linkedin.com/in/malmi-wimalaweera-ba4071315" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <p className="talk-sub">Have a role, a project, or just want to say hi? Drop me a message — I'll get back to you.</p>
+            <div className="talk-grid">
+              <div className="talk-aside">
+                <a className="talk-contact" href="mailto:m.wimalaweera01@gmail.com">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                  m.wimalaweera01@gmail.com
+                </a>
+                <div className="talk-links">
+                  <a href="https://github.com/MalmEEE" target="_blank" rel="noopener noreferrer">GitHub</a>
+                  <a href="https://linkedin.com/in/malmi-wimalaweera-ba4071315" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                </div>
+              </div>
+
+              <form className="contact-form" onSubmit={onSubmit}>
+                <div className="field">
+                  <label htmlFor="cf-name">Name</label>
+                  <input id="cf-name" name="name" type="text" required placeholder="Your name" />
+                </div>
+                <div className="field">
+                  <label htmlFor="cf-email">Email</label>
+                  <input id="cf-email" name="email" type="email" required placeholder="you@example.com" />
+                </div>
+                <div className="field">
+                  <label htmlFor="cf-message">Message</label>
+                  <textarea id="cf-message" name="message" rows="4" required placeholder="What would you like to talk about?"></textarea>
+                </div>
+                <button className="glow-btn" type="submit" disabled={status === 'sending'}>
+                  {status === 'sending' ? 'Sending…' : 'Send message'}
+                </button>
+                {status === 'sent' && <p className="form-note ok">Thanks! Your message is on its way, I'll reply soon.</p>}
+                {status === 'error' && <p className="form-note err">Something went wrong. Please email me directly instead.</p>}
+              </form>
             </div>
           </div>
         </section>
