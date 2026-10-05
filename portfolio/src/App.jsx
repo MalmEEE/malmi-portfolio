@@ -287,7 +287,8 @@ export default function App() {
         </div>
 
         <section id="about" className="section">
-          <div className="wrap grid-2 about-grid">
+          <div className="wrap">
+            <div className="grid-2 about-grid">
             <div className="about-copy">
               <span className="mono eyebrow">About me</span>
               <h2 className="display">From full-stack to forecasting</h2>
@@ -306,7 +307,6 @@ export default function App() {
               </p>
             </div>
 
-            <div className="about-side">
               <div className="about-profile">
                 <div className="avatar">
                   <span className="avatar-initials" aria-hidden="true">MW</span>
@@ -318,6 +318,23 @@ export default function App() {
                   <div className="ap-stat"><span className="display ap-num">1 yr</span><span className="ap-lbl">Industry experience</span></div>
                   <div className="ap-stat"><span className="display ap-num">BSc</span><span className="ap-lbl">Data Science, final year</span></div>
                   <div className="ap-stat"><span className="display ap-num">SL</span><span className="ap-lbl">Based in Sri Lanka</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-timelines">
+              <div className="edu-card">
+                <div className="edu-head">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" /></svg>
+                  <span className="edu-title">Experience</span>
+                </div>
+                <div className="edu-timeline">
+                  <div className="edu-item">
+                    <span className="edu-dot" aria-hidden="true" />
+                    <div className="edu-degree">Trainee Software Developer - Full-Stack</div>
+                    <div className="edu-org">Toyota Lanka (Pvt) Ltd · built an internal enterprise web app end to end and maintained live production systems</div>
+                    <span className="mono edu-year">Jul 2025 – Jul 2026</span>
+                  </div>
                 </div>
               </div>
 
