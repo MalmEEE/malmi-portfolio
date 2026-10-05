@@ -24,12 +24,20 @@ const PROJECTS = [
     href: 'https://github.com/MalmEEE/SmartTeaAI-',
   },
   {
+    name: 'DocChat',
+    tagline: 'React · FastAPI · RAG',
+    img: '/projects/docChat.png',
+    desc: 'Chat with your PDFs — a RAG app that answers questions from your own documents with page-level citations. Chunks and embeds documents with sentence-transformers, retrieves from ChromaDB, and generates grounded answers with Gemini.',
+    tags: ['React', 'FastAPI', 'sentence-transformers', 'ChromaDB', 'Gemini'],
+    href: 'https://github.com/MalmEEE/doc-chat',
+  },
+  {
     name: 'Cafe Finder',
     tagline: 'React · Node / Express',
     img: '/projects/cafe.png',
     desc: 'Find nearby cafes on a map — live opening hours, filters and sorting, and favourites saved locally. Built on OpenStreetMap and Leaflet.',
     tags: ['React', 'Node/Express', 'Leaflet', 'OSM'],
-    href: null,
+    href: 'https://github.com/MalmEEE/Cafe-Finder',
   },
   {
     name: 'Weather Planner',
@@ -37,7 +45,15 @@ const PROJECTS = [
     img: '/projects/weather.png',
     desc: 'A “what to wear, what to do” planner that turns live weather and air-quality data into one clear suggestion, using geolocation or manual search.',
     tags: ['React', 'Node/Express', 'Open-Meteo'],
-    href: null,
+    href: 'https://github.com/MalmEEE/weather-planner',
+  },
+  {
+    name: 'Movie Recommender',
+    tagline: 'React · FastAPI · Collaborative filtering',
+    img: '/projects/movie-recommender.png',
+    desc: 'Rate a few movies, get personalized picks — item-based collaborative filtering on MovieLens, enriched with TMDb data, served via FastAPI to a React UI.',
+    tags: ['React', 'FastAPI', 'MovieLens', 'TMDb'],
+    href: 'https://github.com/MalmEEE/movie-recommender',
   },
 ]
 
@@ -257,7 +273,7 @@ export default function App() {
               <span className="mono eyebrow">About me</span>
               <h2 className="display">From full-stack to forecasting</h2>
               <p>
-                I spent the past year as a trainee full-stack developer at Toyota Lanka, where I designed
+                I spent the past year as a trainee full-stack developer at Toyota Lanka (Pvt) Ltd, where I designed
                 and built an internal enterprise web application end to end, and contributed to several
                 other internal systems for performance management, company communications and sales
                 tracking. I also kept live production platforms healthy with bug fixes and change requests —
@@ -317,8 +333,7 @@ export default function App() {
             <div className="projects">
               <ProjectCard p={PROJECTS[0]} featured />
               <div className="projects-grid">
-                <ProjectCard p={PROJECTS[1]} />
-                <ProjectCard p={PROJECTS[2]} />
+                {PROJECTS.slice(1).map((p) => <ProjectCard p={p} key={p.name} />)}
               </div>
             </div>
           </div>

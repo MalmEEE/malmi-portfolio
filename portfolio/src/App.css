@@ -228,7 +228,7 @@ h2.display{font-size:32px;margin-bottom:8px;}
 
 /* Work — project cards with preview image */
 .projects{display:flex;flex-direction:column;gap:24px;}
-.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.projects-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;}
 @media (max-width:640px){.projects-grid{grid-template-columns:1fr;}}
 
 .project-card{
@@ -241,26 +241,27 @@ h2.display{font-size:32px;margin-bottom:8px;}
   border-color:color-mix(in srgb, var(--pink) 55%, transparent);
   box-shadow:0 24px 50px -26px rgba(169,61,172,.6);
 }
-.project-media{position:relative;aspect-ratio:16/9;overflow:hidden;
+.project-media{position:relative;height:170px;overflow:hidden;
   background:linear-gradient(135deg,var(--indigo),#2a0b34);}
 .project-media img{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease;}
 .project-card:hover .project-media img{transform:scale(1.05);}
 .project-fallback{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:26px;letter-spacing:1px;color:rgba(245,242,255,.32);text-align:center;padding:0 12px;}
-.project-body{padding:22px 24px;display:flex;flex-direction:column;gap:14px;}
-.project-head{display:flex;flex-direction:column;gap:5px;}
-.project-name{font-size:21px;}
-.project-tagline{font-size:12px;color:var(--ink-dim);}
-.project-desc{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-dim);}
+  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;letter-spacing:1px;color:rgba(245,242,255,.32);text-align:center;padding:0 12px;}
+.project-body{padding:18px 20px;display:flex;flex-direction:column;gap:11px;}
+.project-head{display:flex;flex-direction:column;gap:4px;}
+.project-name{font-size:18px;}
+.project-tagline{font-size:11.5px;color:var(--ink-dim);}
+.project-desc{margin:0;font-size:13px;line-height:1.55;color:var(--ink-dim);}
 
 /* featured card: image beside text on wide screens */
 .project-card.featured{display:grid;grid-template-columns:1.05fr 1fr;align-items:stretch;}
-.project-card.featured .project-media{aspect-ratio:auto;height:100%;min-height:280px;}
-.project-card.featured .project-body{justify-content:center;padding:30px 32px;}
-.project-card.featured .project-name{font-size:26px;}
+.project-card.featured .project-media{height:100%;min-height:210px;}
+.project-card.featured .project-body{justify-content:center;padding:24px 28px;}
+.project-card.featured .project-name{font-size:22px;}
+.project-card.featured .project-desc{font-size:13.5px;}
 @media (max-width:760px){
   .project-card.featured{grid-template-columns:1fr;}
-  .project-card.featured .project-media{aspect-ratio:16/9;min-height:0;}
+  .project-card.featured .project-media{height:170px;min-height:0;}
 }
 
 .talk-links{display:flex;gap:24px;margin-top:4px;}
