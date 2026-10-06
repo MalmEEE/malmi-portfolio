@@ -268,6 +268,17 @@ a:hover{color:var(--ink);}
 .ap-lbl{font-size:10.5px;color:var(--ink-dim);line-height:1.35;}
 .about-side{display:flex;flex-direction:column;gap:20px;}
 @media (max-width:760px){.about-profile{max-width:none;}}
+/* Mobile: keep the portrait at a desktop-like size (don't let it fill
+   edge-to-edge and blow up on high-density phone screens) */
+@media (max-width:760px){
+  .about-profile{max-width:440px;margin-left:auto;margin-right:auto;}
+  .portrait-frame{height:340px;}
+  .portrait-cutout{height:300px;}
+  .ps-disc{width:240px;height:240px;}
+  .ps-arc{width:286px;height:286px;
+    -webkit-mask:radial-gradient(circle,transparent 133px,#000 134px,#000 142px,transparent 143px);
+    mask:radial-gradient(circle,transparent 133px,#000 134px,#000 142px,transparent 143px);}
+}
 
 /* Education timeline card */
 .edu-card{border-radius:20px;background:var(--bg-panel);border:1px solid var(--line);
