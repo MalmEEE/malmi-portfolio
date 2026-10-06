@@ -23,6 +23,14 @@ const PROJECTS = [
     tags: ['Python', 'LSTM', 'XGBoost', 'SHAP', 'NestJS', 'FinBERT'],
     href: 'https://github.com/MalmEEE/SmartTeaAI-',
   },
+    {
+    name: 'Fertilizer Recommender',
+    tagline: 'Python · XGBoost · Streamlit',
+    img: '/projects/fertilizer.png',
+    desc: 'A Kaggle Playground (S5E6) project that recommends the top-3 fertilizers for given soil and crop conditions. I trained an XGBoost model with full feature engineering, then shipped a Streamlit app that loads the saved model, encoder and feature list to serve live predictions with a confidence score for each. MAP@3 of 0.3254 on 5-fold cross-validation.',
+    tags: ['Python', 'XGBoost', 'Streamlit', 'Kaggle'],
+    href: 'https://github.com/MalmEEE/fertilizer-prediction',
+  },
   {
     name: 'DocChat',
     tagline: 'React · FastAPI · RAG',
