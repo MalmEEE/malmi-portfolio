@@ -476,7 +476,7 @@ export default function App() {
         <section id="talk" className="section talk">
           <div className="wrap reveal">
             <h2 className="display">Let's talk</h2>
-            <p className="talk-sub">Have a role, a project, or just want to say hi? Drop me a message — I'll get back to you.</p>
+            <p className="talk-sub">Have a role, a project, or just want to say hi? Drop me a message. I'll get back to you.</p>
             <div className="talk-grid">
               <div className="talk-aside">
                 <a className="talk-contact" href="mailto:m.wimalaweera01@gmail.com">
