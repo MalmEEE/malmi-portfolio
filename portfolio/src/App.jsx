@@ -10,8 +10,8 @@ function milestoneFor(value) {
 }
 
 const MARQUEE_ITEMS = [
-  'Python', 'XGBoost', 'LSTM', 'SHAP', 'React',
-  'NestJS', 'TypeScript', 'Leaflet', 'Open-Meteo', 'FinBERT',
+  'Python', 'XGBoost', 'LSTM', 'SHAP', 'React', 'Next.js', 'R',
+  'NestJS', 'TypeScript', 'JavaScript'
 ]
 
 const PROJECTS = [
@@ -19,7 +19,7 @@ const PROJECTS = [
     name: 'SmartTeaAI',
     tagline: 'Dissertation · Tea auction price forecasting',
     img: '/projects/smarttea.png',
-    desc: 'A forecasting system for Sri Lanka’s tea auction prices at national and elevation level. It runs ARIMA, SARIMAX, Random Forest, XGBoost and LSTM, explains predictions with SHAP, and reads market sentiment through a FinBERT pipeline — served via a NestJS API with role-based access.',
+    desc: 'A forecasting system for Sri Lanka’s tea auction prices at national and elevation level. It runs ARIMA, SARIMAX, Random Forest, XGBoost and LSTM, explains predictions with SHAP, and reads market sentiment through a FinBERT pipeline, served via a NestJS API with role-based access.',
     tags: ['Python', 'LSTM', 'XGBoost', 'SHAP', 'NestJS', 'FinBERT'],
     href: 'https://github.com/MalmEEE/SmartTeaAI-',
   },
@@ -27,7 +27,7 @@ const PROJECTS = [
     name: 'DocChat',
     tagline: 'React · FastAPI · RAG',
     img: '/projects/docChat.png',
-    desc: 'Chat with your PDFs — a RAG app that answers questions from your own documents with page-level citations. Chunks and embeds documents with sentence-transformers, retrieves from ChromaDB, and generates grounded answers with Gemini.',
+    desc: 'Chat with your PDFs - a RAG app that answers questions from your own documents with page-level citations. Chunks and embeds documents with sentence-transformers, retrieves from ChromaDB, and generates grounded answers with Gemini.',
     tags: ['React', 'FastAPI', 'sentence-transformers', 'ChromaDB', 'Gemini'],
     href: 'https://github.com/MalmEEE/doc-chat',
   },
@@ -35,7 +35,7 @@ const PROJECTS = [
     name: 'Cafe Finder',
     tagline: 'React · Node / Express',
     img: '/projects/cafe.png',
-    desc: 'Find nearby cafes on a map — live opening hours, filters and sorting, and favourites saved locally. Built on OpenStreetMap and Leaflet.',
+    desc: 'Find nearby cafes on a map - live opening hours, filters and sorting, and favourites saved locally. Built on OpenStreetMap and Leaflet.',
     tags: ['React', 'Node/Express', 'Leaflet', 'OSM'],
     href: 'https://github.com/MalmEEE/Cafe-Finder',
   },
@@ -43,6 +43,7 @@ const PROJECTS = [
     name: 'Weather Planner',
     tagline: 'React · Node / Express',
     img: '/projects/weather.png',
+    portrait: true,
     desc: 'A “what to wear, what to do” planner that turns live weather and air-quality data into one clear suggestion, using geolocation or manual search.',
     tags: ['React', 'Node/Express', 'Open-Meteo'],
     href: 'https://github.com/MalmEEE/weather-planner',
@@ -51,7 +52,7 @@ const PROJECTS = [
     name: 'Movie Recommender',
     tagline: 'React · FastAPI · Collaborative filtering',
     img: '/projects/movie-recommender.png',
-    desc: 'Rate a few movies, get personalized picks — item-based collaborative filtering on MovieLens, enriched with TMDb data, served via FastAPI to a React UI.',
+    desc: 'Rate a few movies, get personalized picks, item-based collaborative filtering on MovieLens, enriched with TMDb data, served via FastAPI to a React UI.',
     tags: ['React', 'FastAPI', 'MovieLens', 'TMDb'],
     href: 'https://github.com/MalmEEE/movie-recommender',
   },
@@ -104,7 +105,7 @@ const NAV = [
   { id: 'talk', label: 'Contact' },
 ]
 
-const ROLES = ['Full-Stack Developer', 'Data Science Student', 'React & Python Dev', 'Problem Solver']
+const ROLES = ['Full-Stack Developer', 'Data Science Student', 'React & Python Dev']
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xdeanqzz'
 
@@ -149,11 +150,17 @@ function TechTile({ t }) {
 }
 
 function ProjectCard({ p, featured }) {
+  const [imgOk, setImgOk] = useState(true)
   return (
     <article className={`project-card${featured ? ' featured' : ''}`}>
-      <div className="project-media">
-        <span className="project-fallback" aria-hidden="true">{p.name}</span>
-        <img src={p.img} alt={`${p.name} preview`} loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
+      <div className={`project-media${p.portrait ? ' is-portrait' : ''}`}>
+        {!imgOk && <span className="project-fallback" aria-hidden="true">{p.name}</span>}
+        {imgOk && p.portrait && (
+          <div className="media-blur" aria-hidden="true" style={{ backgroundImage: `url(${p.img})` }} />
+        )}
+        {imgOk && (
+          <img className={p.portrait ? 'phone-shot' : ''} src={p.img} alt={`${p.name} preview`} loading="lazy" onError={() => setImgOk(false)} />
+        )}
       </div>
       <div className="project-body">
         <div className="project-head">
@@ -222,6 +229,42 @@ export default function App() {
     return () => obs.disconnect()
   }, [])
 
+  // reveal sections on scroll
+  useEffect(() => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target) }
+      })
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
+  // back-to-top visibility
+  const [showTop, setShowTop] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > 500)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // 3D cursor tilt on the profile avatar
+  const onTilt = (e) => {
+    const el = e.currentTarget
+    const r = el.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width
+    const py = (e.clientY - r.top) / r.height
+    el.style.setProperty('--rx', ((0.5 - py) * 16).toFixed(2) + 'deg')
+    el.style.setProperty('--ry', ((px - 0.5) * 16).toFixed(2) + 'deg')
+    el.style.setProperty('--gx', (px * 100).toFixed(1) + '%')
+    el.style.setProperty('--gy', (py * 100).toFixed(1) + '%')
+  }
+  const resetTilt = (e) => {
+    e.currentTarget.style.setProperty('--rx', '0deg')
+    e.currentTarget.style.setProperty('--ry', '0deg')
+  }
+
   return (
     <>
       <header className="nav">
@@ -287,8 +330,37 @@ export default function App() {
         </div>
 
         <section id="about" className="section">
-          <div className="wrap">
+          <div className="wrap reveal">
             <div className="grid-2 about-grid">
+              <div className="about-profile">
+                <div className="portrait-stage">
+                  <div className="portrait-frame">
+                    <div className="ps-disc" aria-hidden="true" />
+                    <div className="ps-arc" aria-hidden="true" />
+                    <div className="ps-grid" aria-hidden="true" />
+                    <div className="ps-spark ps-spark-a" aria-hidden="true" />
+                    <div className="ps-spark ps-spark-b" aria-hidden="true" />
+                    <div className="portrait-shadow" aria-hidden="true" />
+                    <img className="portrait-cutout" src="/me-cutout.png" alt="Malmi Wimalaweera"
+                      onError={(e) => { e.currentTarget.style.display = 'none' }} />
+                  </div>
+                  <div className="ps-chip ps-chip-top">
+                    <span className="ps-chip-dot" aria-hidden="true" />Available for work
+                  </div>
+                  <div className="ps-chip ps-chip-bot">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    Full-Stack · Data Science
+                  </div>
+                </div>
+                <div className="display ap-name">Malmi Wimalaweera</div>
+                <div className="mono ap-role">Full-Stack Developer · Data Science</div>
+                <div className="ap-stats">
+                  <div className="ap-stat"><span className="display ap-num">1 yr</span><span className="ap-lbl">Industry experience</span></div>
+                  <div className="ap-stat"><span className="display ap-num">BSc</span><span className="ap-lbl">Data Science, final year</span></div>
+                  <div className="ap-stat"><span className="display ap-num">SL</span><span className="ap-lbl">Kandana, Sri Lanka</span></div>
+                </div>
+              </div>
+
             <div className="about-copy">
               <span className="mono eyebrow">About me</span>
               <h2 className="display">From full-stack to forecasting</h2>
@@ -296,7 +368,7 @@ export default function App() {
                 I spent the past year as a trainee full-stack developer at Toyota Lanka (Pvt) Ltd, where I designed
                 and built an internal enterprise web application end to end, and contributed to several
                 other internal systems for performance management, company communications and sales
-                tracking. I also kept live production platforms healthy with bug fixes and change requests —
+                tracking. I also kept live production platforms healthy with bug fixes and change requests,
                 all in React, Next.js, NestJS and Express, with MySQL underneath, inside an Agile team.
               </p>
               <p>
@@ -306,20 +378,6 @@ export default function App() {
                 full-stack years: take a real, messy problem and build something that actually works.
               </p>
             </div>
-
-              <div className="about-profile">
-                <div className="avatar">
-                  <span className="avatar-initials" aria-hidden="true">MW</span>
-                  <img src="/me.jpg" alt="Malmi Wimalaweera" onError={(e) => { e.currentTarget.style.display = 'none' }} />
-                </div>
-                <div className="display ap-name">Malmi Wimalaweera</div>
-                <div className="mono ap-role">Full-Stack Developer · Data Science</div>
-                <div className="ap-stats">
-                  <div className="ap-stat"><span className="display ap-num">1 yr</span><span className="ap-lbl">Industry experience</span></div>
-                  <div className="ap-stat"><span className="display ap-num">BSc</span><span className="ap-lbl">Data Science, final year</span></div>
-                  <div className="ap-stat"><span className="display ap-num">SL</span><span className="ap-lbl">Based in Sri Lanka</span></div>
-                </div>
-              </div>
             </div>
 
             <div className="about-timelines">
@@ -363,7 +421,7 @@ export default function App() {
         </section>
 
         <section id="work" className="section">
-          <div className="wrap">
+          <div className="wrap reveal">
             <h2 className="display">What I've been building</h2>
             <p className="hint">A few projects I've built recently.</p>
             <div className="projects">
@@ -376,7 +434,7 @@ export default function App() {
         </section>
 
         <section id="skills" className="section">
-          <div className="wrap">
+          <div className="wrap reveal">
             <h2 className="display">What I work with</h2>
             <p className="hint">Languages, frameworks and tools I build with day to day.</p>
             <div className="tech-grid">
@@ -409,7 +467,7 @@ export default function App() {
         </section>
 
         <section id="talk" className="section talk">
-          <div className="wrap">
+          <div className="wrap reveal">
             <h2 className="display">Let's talk</h2>
             <p className="talk-sub">Have a role, a project, or just want to say hi? Drop me a message — I'll get back to you.</p>
             <div className="talk-grid">
@@ -451,6 +509,14 @@ export default function App() {
       <footer className="footer">
         <div className="wrap mono">© 2026 Malmi Wimalaweera</div>
       </footer>
+
+      <button
+        className={`to-top${showTop ? ' show' : ''}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+      </button>
     </>
   )
 }
